@@ -1,0 +1,21 @@
+{
+  "name": "food_analytics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cyruslk/commensality_analytics.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cyruslk/commensality_analytics/issues"
+  },
+  "homepage": "https://github.com/cyruslk/commensality_analytics#readme"
+}
