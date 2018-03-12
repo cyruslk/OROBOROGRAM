@@ -1,1 +1,1 @@
-This is the repository of commensality_analytics project.
+This is the repository of the commensality_analytics project.
