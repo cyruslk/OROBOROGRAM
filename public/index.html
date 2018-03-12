@@ -3,20 +3,18 @@
 
 <head>
     <meta charset="utf-8">
-    <title>IP chat</title>
+    <title>express styling</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 
 <body class="main_page">
 
+  <div id="target">Loading...</div>
 
-    <script id="img_template" type="text/template">
 
-        <div>
-          <p>vdvdfv</p>
-        </div
-
+    <script id="message-template" type="template">
+        <img src={{firstItemImage}} style="filter: brightness({{theChosenStyling}}%);"/>
     </script>
 
 
@@ -25,14 +23,8 @@
     <script src="/js/libs/moment.js"></script>
     <script src="/js/libs/mustache.js"></script>
     <script src="/js/libs/deparam.js"></script>
-    <script src="/js/chat.js"></script>
+    <script src="/js/client.js"></script>
 
-
-    <script>
-        $.getJSON('http://www.geoplugin.net/json.gp?jsoncallback=?', function(data) {
-            console.log(JSON.stringify(data, null, 2));
-        });
-    </script>
 
 </body>
 
