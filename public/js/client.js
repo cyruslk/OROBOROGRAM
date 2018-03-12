@@ -29,27 +29,41 @@ socket.on('getTheUsersData', function (message) {
 
   console.log("this is the fucking data", message);
 
-  let firstItemImage = message.bodyObj.data.children[1].data.url;
-  let firstItemCommentsNumber = message.bodyObj.data.children[1].data.num_comments;
-  let firstItemCommentsScore = message.bodyObj.data.children[1].data.score;
-  let firstItemCommentsCreated = message.bodyObj.data.children[1].data.created;
+  let title = message.bodyObj.data.children[1].data.title;
+  let url = message.bodyObj.data.children[1].data.url;
+  let num_comments = message.bodyObj.data.children[1].data.num_comments;
+  let score = message.bodyObj.data.children[1].data.score;
+  let created = message.bodyObj.data.children[1].data.created;
+  let created_utc = message.bodyObj.data.children[1].data.created_utc;
+  let downs = message.bodyObj.data.children[1].data.downs;
+  let gilded = message.bodyObj.data.children[1].data.gilded;
+  let thumbnail_height = message.bodyObj.data.children[1].data.thumbnail_height;
+  let thumbnail_width =  message.bodyObj.data.children[1].data.thumbnail_width;
 
-  let theRandomStylings = [firstItemCommentsNumber, firstItemCommentsScore, firstItemCommentsCreated];
-  let theChosenStyling = theRandomStylings[Math.floor(Math.random() * ((theRandomStylings.length - 1) - 0 + 1))];
-  console.log("HERE!" , theChosenStyling);
 
-  console.log("THIS IS THE FIRST POST DATA",
-        `${firstItemImage} +`,
-        `${firstItemCommentsNumber} +`,
-        `${firstItemCommentsScore} +`,
-        `${firstItemCommentsCreated}`
-      );
+  let randomValues = [num_comments, score, created, created_utc, downs, gilded, gilded, thumbnail_height, thumbnail_width];
+  let randomValue = randomValues[Math.floor(Math.random() * ((randomValues.length - 1) - 0 + 1))];
+  console.log("HERE!" , randomValue);
+
+  let randomFilters = ["contrast", "grayscale", "invert", "opacity", "saturate", "sepia"];
+  let randomFilter = randomFilters[Math.floor(Math.random() * ((randomFilters.length - 1) - 0 + 1))];
+
+
+
+  // console.log("THIS IS THE FIRST POST DATA",
+  //       `${url} +`,
+  //       `${num_comments} +`,
+  //       `${score} +`,
+  //       `${created}`
+  //     );
 
   var template = jQuery("#message-template").html();
 
   var html = Mustache.render(template, {
-    firstItemImage: firstItemImage,
-    theChosenStyling: theChosenStyling
+    url: url,
+    title: title,
+    randomFilter: randomFilter,
+    randomValue: randomValue
   });
 
   // $('#message-template').html(html);
