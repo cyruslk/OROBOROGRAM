@@ -1,6 +1,10 @@
 {
   "name": "food_analytics",
   "version": "1.0.0",
+  "engines": {
+  "node": "8.2.1",
+  "npm": "5.7.1"
+  },
   "description": "",
   "main": "server.js",
   "dependencies": {
