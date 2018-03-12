@@ -3,7 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "dependencies": {},
+  "dependencies": {
+    "binstring": "^0.2.1",
+    "express": "^4.16.3",
+    "lodash": "^4.17.5",
+    "moment": "^2.21.0",
+    "request": "^2.85.0",
+    "socket.io": "^2.0.4"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "mocha"
