@@ -7,14 +7,15 @@ const port = process.env.PORT || 3000;
 var _ = require('lodash');
 var request = require("request");
 var conv = require('binstring');
-
-
-
-
+var webshot = require('webshot');
 var app = express();
 var server = http.createServer(app);
-
 var io = socketIO(server);
+
+
+var options = {
+  renderDelay: 8000,
+};
 
 
 io.on("connection", (socket) => {
@@ -35,6 +36,11 @@ io.on("connection", (socket) => {
     console.log("New disconnection from the client!");
   })
 })
+
+
+// webshot('https://food-analytics.herokuapp.com/', 'food.jpg', options, function(err) {
+//   // screenshot now saved to google.png
+// });
 
 
 app.use(express.static(publicPath));
