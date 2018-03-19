@@ -29,16 +29,20 @@ socket.on('getTheUsersData', function (message) {
 
   console.log("this is the fucking data", message);
 
-  let title = message.bodyObj.data.children[1].data.title;
-  let url = message.bodyObj.data.children[1].data.url;
-  let num_comments = message.bodyObj.data.children[1].data.num_comments;
-  let score = message.bodyObj.data.children[1].data.score;
-  let created = message.bodyObj.data.children[1].data.created;
-  let created_utc = message.bodyObj.data.children[1].data.created_utc;
-  let downs = message.bodyObj.data.children[1].data.downs;
-  let gilded = message.bodyObj.data.children[1].data.gilded;
-  let thumbnail_height = message.bodyObj.data.children[1].data.thumbnail_height;
-  let thumbnail_width =  message.bodyObj.data.children[1].data.thumbnail_width;
+  let arrayLength = message.bodyObj.data.children.length;
+  console.log("0", arrayLength);
+  let randomArraylength = Math.floor(Math.random() * Math.floor(arrayLength))
+  console.log("1", randomArraylength);
+  let title = message.bodyObj.data.children[randomArraylength].data.title;
+  let url = message.bodyObj.data.children[randomArraylength].data.url;
+  let num_comments = message.bodyObj.data.children[randomArraylength].data.num_comments;
+  let score = message.bodyObj.data.children[randomArraylength].data.score;
+  let created = message.bodyObj.data.children[randomArraylength].data.created;
+  let created_utc = message.bodyObj.data.children[randomArraylength].data.created_utc;
+  let downs = message.bodyObj.data.children[randomArraylength].data.downs;
+  let gilded = message.bodyObj.data.children[randomArraylength].data.gilded;
+  let thumbnail_height = message.bodyObj.data.children[randomArraylength].data.thumbnail_height;
+  let thumbnail_width =  message.bodyObj.data.children[randomArraylength].data.thumbnail_width;
 
 
   let randomValues = [num_comments, score, created, created_utc, downs, gilded, gilded, thumbnail_height, thumbnail_width];
@@ -48,14 +52,6 @@ socket.on('getTheUsersData', function (message) {
   let randomFilters = ["contrast", "grayscale", "invert", "opacity", "saturate", "sepia"];
   let randomFilter = randomFilters[Math.floor(Math.random() * ((randomFilters.length - 1) - 0 + 1))];
 
-
-
-  // console.log("THIS IS THE FIRST POST DATA",
-  //       `${url} +`,
-  //       `${num_comments} +`,
-  //       `${score} +`,
-  //       `${created}`
-  //     );
 
   var template = jQuery("#message-template").html();
 
@@ -76,10 +72,4 @@ socket.on('getTheUsersData', function (message) {
   scrollToBottom();
 
 
-});
-
-
-
-html2canvas(document.body).then(function(canvas) {
-    document.body.appendChild(canvas);
 });

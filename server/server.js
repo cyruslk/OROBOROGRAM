@@ -11,6 +11,10 @@ var webshot = require('webshot');
 var app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
+var Jimp = require("jimp");
+
+var fs = require('fs');
+    Twit = require('twit');
 
 
 var options = {
@@ -29,6 +33,23 @@ io.on("connection", (socket) => {
       bodyObj: bodyObj
     });
 
+
+    let arrayLength = bodyObj.data.children.length;
+    console.log("0", arrayLength);
+    let randomArraylength = Math.floor(Math.random() * Math.floor(arrayLength))
+
+    var random_img = bodyObj.data.children[randomArraylength].data.url;
+
+    webshot(random_img, 'food.jpg', options, function(err) {
+
+      Jimp.read("food.jpg", function (err, food) {
+          if (err) throw err;
+          food.quality(100)                 // set JPEG quality
+               .write("food-small-bw.jpg"); // save
+      });
+
+    });
+
   });
 
 
@@ -37,11 +58,7 @@ io.on("connection", (socket) => {
   })
 })
 
-
-// webshot('https://food-analytics.herokuapp.com/', 'food.jpg', options, function(err) {
-//   // screenshot now saved to google.png
-// });
-
+var data = require('fs').readFileSync('food-small-bw.jpg');
 
 app.use(express.static(publicPath));
 
@@ -49,3 +66,7 @@ app.use(express.static(publicPath));
 server.listen(port, () =>{
   console.log(`Server is up on port ${port}`);
 })
+
+
+
+  // VJm2CF0caRX62UfO5QQ8h9KWB
