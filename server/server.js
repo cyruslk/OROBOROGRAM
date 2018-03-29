@@ -56,9 +56,8 @@ io.on("connection", (socket) => {
                 food
                     .autocrop()
                     .color([
-                    { apply: 'hue', params: [ 10 ] },
-                    { apply: 'lighten', params: [ 1 ] },
-                    { apply: 'xor', params: [ '#06D' ] }
+                    { apply: 'saturate', params: [ 433 ] },
+                    { apply: 'lighten', params: [ 10 ] }
                 ]).write("food-small-bw.jpg"); // save
             });
         });
