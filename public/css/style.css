@@ -16,3 +16,24 @@ body{
 #target img{
   height: 80vh;
 }
+
+
+.embed_last_tweet{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.twitter-tweet{
+  transform: scale(2) !important;
+}
+
+
+.above div iframe, .above div twitterwidget {
+  -ms-transform:     scale(2) !important;
+  -webkit-transform: scale(2) !important;
+  transform:         scale(2) !important;
+  opacity: 1;
+}

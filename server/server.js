@@ -36,20 +36,21 @@ io.on("connection", (socket) => {
 
         let ArrayOfThePickedEle = _.values(bodyObj.data.children[randomArraylength].data);
 
+        let randomArrayTitle = bodyObj.data.children[randomArraylength].data.title;
+
         let arrayNumbs = ArrayOfThePickedEle.filter(ele => _.isNumber(ele));
         console.log(arrayNumbs);
         let randomImg = bodyObj.data.children[randomArraylength].data.url;
         console.log(randomImg);
 
-        T.post('statuses/update', { status: `${randomImg}` }, function(err, data, response) {
-          console.log(data)
-        })
+        T.post('statuses/update', { status: `${randomImg} - ${randomArrayTitle} - ${arrayNumbs}` }, function(err, data, response) {
+          // console.log(data)
 
-        socket.emit('getTheUsersData', {
-            bodyObj: bodyObj,
-            arrayNumbs: arrayNumbs,
-            randomImg: randomImg
-        });
+          socket.emit("browseTwitterArray", () => {
+              console.log("New disconnection from the client!");
+          })
+
+        })
 
         webshot(randomImg, 'food.jpg', options, function(err) {
           console.log("what is this", randomImg);
@@ -82,37 +83,3 @@ app.use(express.static(publicPath));
 server.listen(port, () => {
     console.log(`Server is up on port ${port}`);
 })
-
-
-// function upload_random_image(images){
-//   console.log('Opening an image...');
-//   var image_path = path.join(__dirname, '/images/' + random_from_array(images)),
-//       b64content = fs.readFileSync(image_path, { encoding: 'base64' });
-//
-//   console.log('Uploading an image...');
-//
-//   T.post('media/upload', { media_data: b64content }, function (err, data, response) {
-//     if (err){
-//       console.log('ERROR:');
-//       console.log(err);
-//     }
-//     else{
-//       console.log('Image uploaded!');
-//       console.log('Now tweeting it...');
-//
-//       T.post('statuses/update', {
-//         media_ids: new Array(data.media_id_string)
-//       },
-//         function(err, data, response) {
-//           if (err){
-//             console.log('ERROR:');
-//             console.log(err);
-//           }
-//           else{
-//             console.log('Posted an image!');
-//           }
-//         }
-//       );
-//     }
-//   });
-// }
