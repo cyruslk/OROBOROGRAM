@@ -50,7 +50,7 @@ io.on("connection", (socket) => {
           T.get('statuses/user_timeline', {screen_name	: 'food_analytics'}, function(err, data, response) {
             var isArr = data.slice(-1)[0];
           })
-        webshot(randomImg, 'food.jpg', options, function(err) {
+          webshot(randomImg, 'food.jpg', function(err) {
             Jimp.read("food.jpg", function(err, food) {
                 if (err) throw err;
                 food
