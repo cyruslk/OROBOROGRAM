@@ -58,8 +58,6 @@ io.on("connection", (socket) => {
                 return arrayNumbs[Math.floor(Math.random() * arrayNumbs.length)];
             }
 
-            // console.log(arrayNumbsTwitter);
-
             Jimp.read(twittedLink, function(err, twittedLink) {
                 if (err) throw err;
                 twittedLink
