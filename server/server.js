@@ -35,60 +35,53 @@ io.on("connection", (socket) => {
         let arrayNumbs = ArrayOfThePickedEle.filter(ele => _.isNumber(ele));
         let randomImg = bodyObj.data.children[randomArraylength].data.url;
 
-        // console.log(arrayNumbs.length);
-
-        // var file = fs.createWriteStream("food.jpg");
-        // var getThisFile = https.get(randomImg, function(response) {
-        //   response.pipe(file);
-        // });
-
-
         function getRandomValue(){
           return arrayNumbs[Math.floor(Math.random() * arrayNumbs.length)];
         }
+          // Jimp.read(randomImg, function(err, randomImg) {
+          //     if (err) throw err;
+          //     randomImg
+          //         .blur(getRandomValue())
+          //         .resize(600, 600)
+          //         .color([
+          //         { apply: 'lighten', params: [getRandomValue()] },
+          //         { apply: 'hue', params: [ getRandomValue() ] }
+          //
+          //     ]).write("food-small.jpg"); // save
+          // });
 
 
-        // console.log(getRandomValue());
+        // T.post('media/upload', {media: imageToSend}, function(error, media, response) {
+        //   if (!error) {
+        //     // console.log(media);
+        //     var status = {
+        //       status: `${randomImg} - ${randomArrayTitle} - ${arrayNumbs}`,
+        //       media_ids: media.media_id_string // Pass the media id string
+        //     }
+        //     T.post('statuses/update', status, function(error, tweet, response) {
+        //       if (!error) {
+        //         // console.log(tweet);
+        //       }
+        //     });
+        //
+        //   }
+        // });
 
-        for(var i=0; i<4; i++){
-          console.log(getRandomValue());
+        var options = { screen_name: 'ltsYourFoodPorn'};
 
-        }
-
-
-
-          Jimp.read(randomImg, function(err, randomImg) {
-              if (err) throw err;
-              randomImg
-                  .blur(1522693045)
-                  .resize(600, 600)
-                  .color([
-                  { apply: 'lighten', params: [ 0 ] },
-                  { apply: 'hue', params: [ getRandomValue() ] }
-
-              ]).write("food-small.jpg"); // save
-          });
-
-
-        T.post('media/upload', {media: imageToSend}, function(error, media, response) {
-          if (!error) {
-            // console.log(media);
-            var status = {
-              status: `${randomImg} - ${randomArrayTitle} - ${arrayNumbs}`,
-              media_ids: media.media_id_string // Pass the media id string
-            }
-            T.post('statuses/update', status, function(error, tweet, response) {
-              if (!error) {
-                // console.log(tweet);
-              }
-            });
-
-          }
-        });
-          T.get('statuses/user_timeline', {screen_name	: 'food_analytics'}, function(err, data, response) {
+        T.get('statuses/user_timeline', options , function(err, data) {
+          // for (var i = 0; i < data.length ; i++) {
+          //   console.log(data[i].text);
+          // }
             var isArr = data.slice(-1)[0];
-            console.log(isArr);
-          })
+
+          console.log("this thing!!!", isArr.entities);
+        })
+          //
+          // T.get('statuses/user_timeline', {screen_name	: 'food_analytics'}, function(err, data, response) {
+          //   var isArr = data.slice(-1)[0];
+          //   console.log(isArr);
+          // })
 
     });
     socket.on("disconnect", () => {
