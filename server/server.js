@@ -16,8 +16,8 @@ var Jimp = require("jimp");
 var fs = require('fs');
 var Twit = require('twit')
 var T = new Twit(require('./config.js'))
-var imageToSend = fs.readFileSync('food-small-bw.jpg', {encoding: 'base64'});
-var imageToAlter = fs.readFileSync('food.jpg');
+var imageToSend = fs.readFileSync('food-small.jpg', {encoding: 'base64'});
+// var imageToAlter = fs.readFileSync('food.jpg');
 
 
 
@@ -35,42 +35,60 @@ io.on("connection", (socket) => {
         let arrayNumbs = ArrayOfThePickedEle.filter(ele => _.isNumber(ele));
         let randomImg = bodyObj.data.children[randomArraylength].data.url;
 
+        // console.log(arrayNumbs.length);
 
-        var file = fs.createWriteStream("food.jpg");
-        var getThisFile = https.get(randomImg, function(response) {
-          response.pipe(file);
-        });
+        // var file = fs.createWriteStream("food.jpg");
+        // var getThisFile = https.get(randomImg, function(response) {
+        //   response.pipe(file);
+        // });
+
+
+        function getRandomValue(){
+          return arrayNumbs[Math.floor(Math.random() * arrayNumbs.length)];
+        }
+
+
+        // console.log(getRandomValue());
+
+        for(var i=0; i<4; i++){
+          console.log(getRandomValue());
+
+        }
+
 
 
           Jimp.read(randomImg, function(err, randomImg) {
               if (err) throw err;
               randomImg
+                  .blur(1522693045)
+                  .resize(600, 600)
                   .color([
-                  { apply: 'saturate', params: [ 433 ] },
-                  { apply: 'lighten', params: [ 10 ] }
-              ]).write("food-small-bw.jpg"); // save
+                  { apply: 'lighten', params: [ 0 ] },
+                  { apply: 'hue', params: [ getRandomValue() ] }
+
+              ]).write("food-small.jpg"); // save
           });
 
 
-        // T.post('media/upload', {media: imageToSend}, function(error, media, response) {
-        //   if (!error) {
-        //     // console.log(media);
-        //     var status = {
-        //       status: `${randomImg} - ${randomArrayTitle} - ${arrayNumbs}`,
-        //       media_ids: media.media_id_string // Pass the media id string
-        //     }
-        //     T.post('statuses/update', status, function(error, tweet, response) {
-        //       if (!error) {
-        //         // console.log(tweet);
-        //       }
-        //     });
-        //
-        //   }
-        // });
-          // T.get('statuses/user_timeline', {screen_name	: 'food_analytics'}, function(err, data, response) {
-          //   var isArr = data.slice(-1)[0];
-          //   console.log(isArr);
-          // })
+        T.post('media/upload', {media: imageToSend}, function(error, media, response) {
+          if (!error) {
+            // console.log(media);
+            var status = {
+              status: `${randomImg} - ${randomArrayTitle} - ${arrayNumbs}`,
+              media_ids: media.media_id_string // Pass the media id string
+            }
+            T.post('statuses/update', status, function(error, tweet, response) {
+              if (!error) {
+                // console.log(tweet);
+              }
+            });
+
+          }
+        });
+          T.get('statuses/user_timeline', {screen_name	: 'food_analytics'}, function(err, data, response) {
+            var isArr = data.slice(-1)[0];
+            console.log(isArr);
+          })
 
     });
     socket.on("disconnect", () => {
