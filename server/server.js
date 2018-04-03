@@ -17,12 +17,9 @@ var fs = require('fs');
 var Twit = require('twit')
 var T = new Twit(require('./config.js'))
 var imageToSend = fs.readFileSync('food-small-bw.jpg', {encoding: 'base64'});
+var imageToAlter = fs.readFileSync('food.jpg');
 
 
-var file = fs.createWriteStream("file.jpg");
-var getThisFile = https.get("https://i.redd.it/vv8vao2f8gp01.jpg", function(response) {
-  response.pipe(file);
-});
 
 
 io.on("connection", (socket) => {
@@ -37,38 +34,44 @@ io.on("connection", (socket) => {
         let randomArrayTitle = bodyObj.data.children[randomArraylength].data.title;
         let arrayNumbs = ArrayOfThePickedEle.filter(ele => _.isNumber(ele));
         let randomImg = bodyObj.data.children[randomArraylength].data.url;
-        console.log("here it is", randomImg);
 
-        T.post('media/upload', {media: imageToSend}, function(error, media, response) {
-          if (!error) {
-            // console.log(media);
-            var status = {
-              status: `${randomImg} - ${randomArrayTitle} - ${arrayNumbs}`,
-              media_ids: media.media_id_string // Pass the media id string
-            }
-            T.post('statuses/update', status, function(error, tweet, response) {
-              if (!error) {
-                // console.log(tweet);
-              }
-            });
 
-          }
+        var file = fs.createWriteStream("food.jpg");
+        var getThisFile = https.get(randomImg, function(response) {
+          response.pipe(file);
         });
-          T.get('statuses/user_timeline', {screen_name	: 'food_analytics'}, function(err, data, response) {
-            var isArr = data.slice(-1)[0];
-            console.log(isArr);
-          })
-          webshot(randomImg, 'food.jpg', function(err) {
-            Jimp.read("food.jpg", function(err, food) {
-                if (err) throw err;
-                food
-                    .resize(Jimp.AUTO, 250)
-                    .color([
-                    { apply: 'saturate', params: [ 433 ] },
-                    { apply: 'lighten', params: [ 10 ] }
-                ]).write("food-small-bw.jpg"); // save
-            });
-        });
+
+
+          Jimp.read(randomImg, function(err, randomImg) {
+              if (err) throw err;
+              randomImg
+                  .color([
+                  { apply: 'saturate', params: [ 433 ] },
+                  { apply: 'lighten', params: [ 10 ] }
+              ]).write("food-small-bw.jpg"); // save
+          });
+
+
+        // T.post('media/upload', {media: imageToSend}, function(error, media, response) {
+        //   if (!error) {
+        //     // console.log(media);
+        //     var status = {
+        //       status: `${randomImg} - ${randomArrayTitle} - ${arrayNumbs}`,
+        //       media_ids: media.media_id_string // Pass the media id string
+        //     }
+        //     T.post('statuses/update', status, function(error, tweet, response) {
+        //       if (!error) {
+        //         // console.log(tweet);
+        //       }
+        //     });
+        //
+        //   }
+        // });
+          // T.get('statuses/user_timeline', {screen_name	: 'food_analytics'}, function(err, data, response) {
+          //   var isArr = data.slice(-1)[0];
+          //   console.log(isArr);
+          // })
+
     });
     socket.on("disconnect", () => {
         console.log("New disconnection from the client!");
