@@ -25,54 +25,46 @@ io.on("connection", (socket) => {
     });
 
     var options = {
-        screen_name: 'ltsYourFoodPorn'
+        screen_name: 'afp'
     };
     T.get('statuses/user_timeline', options, function(err, data) {
 
         let arrayLengthTwitter = data.length;
+
         var randomArraylengthTwitter = Math.floor(Math.random() * Math.floor(arrayLengthTwitter))
         var twittedLink = data[randomArraylengthTwitter].entities.media[0].media_url_https;
-        console.log(twittedLink);
+
+
         let ArrayOfThePickedEleUser = _.values(data[randomArraylengthTwitter].user);
-        //
         let arrayNumbsTwitter = ArrayOfThePickedEleUser.filter(ele => _.isNumber(ele));
-        //
-        // function getRandomValueTwitNumbers() {
-        //     return arrayNumbsTwitter[Math.floor(Math.random() * arrayNumbsTwitter.length)];
-        // }
 
-        request('https://www.reddit.com/r/foodporn.json', function(error, response, body) {
+        request('https://www.reddit.com/r/food.json', function(error, response, body) {
             var bodyObj = JSON.parse(body);
-
             let arrayLength = bodyObj.data.children.length;
             var randomArraylength = Math.floor(Math.random() * Math.floor(arrayLength))
             let ArrayOfThePickedEle = _.values(bodyObj.data.children[randomArraylength].data);
             let randomArrayTitle = bodyObj.data.children[randomArraylength].data.title;
-            let arrayNumbs = ArrayOfThePickedEle.filter(ele => _.isNumber(ele));
-            let randomImg = bodyObj.data.children[randomArraylength].data.url;
-
-            console.log(arrayNumbs);
+            let arrayNumbs = ArrayOfThePickedEle.filter(ele => _.isNumber(ele) && ele > 0);
+            let twittedLink2 = bodyObj.data.children[randomArraylength].data.url;
 
 
-            function getRandomValue() {
-                return arrayNumbs[Math.floor(Math.random() * arrayNumbs.length)];
-            }
+            Jimp.read(twittedLink2, function(err, twittedLink2) {
 
-            Jimp.read(twittedLink, function(err, twittedLink) {
+                const filters = ["hue", "saturate", "brighten"];
                 if (err) throw err;
-                twittedLink
-                    .blur(getRandomValue())
+                twittedLink2
+                    .blur(getRandomEleFromArray(arrayNumbs))
                     .resize(600, 600)
                     .color([
-                    { apply: 'hue', params: [ getRandomValue()]}
-                ]).write("food-small.jpg"); // save
-                console.log("The image is modified!");
+                    { apply: getRandomEleFromArray(filters),
+                      params: [ getRandomEleFromArray(arrayNumbs)]
+                    }
+                ]).write("food-small.jpg");
 
                   T.post('media/upload', {
                       media: imageToSend
                   }, function(error, media, response) {
                       if (!error) {
-                          // console.log(media);
                           var status = {
                               status: `${arrayNumbsTwitter}`,
                               media_ids: media.media_id_string // Pass the media id string
@@ -84,18 +76,20 @@ io.on("connection", (socket) => {
                           });
                       }
                   });
-
             });
 
 
+            console.log(twittedLink);
+
+            function getRandomEleFromArray(array) {
+                return array[Math.floor(Math.random() * array.length)];
+            }
+
+
             T.get('statuses/user_timeline', {screen_name	: 'food_analytics'}, function(err, data, response) {
-              var isArr = data.slice(-1)[0];
-              // console.log(isArr);
             })
 
-
         });
-
     })
 
     socket.on("disconnect", () => {
