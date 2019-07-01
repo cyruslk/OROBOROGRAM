@@ -1,21 +1,17 @@
 const express = require("express");
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 const path = require("path");
 const bodyParser = require('body-parser');
 const http = require("http");
 const https = require("https");
 const publicPath = path.join(__dirname, "../public");
 const port = process.env.PORT || 5000;
-
-const mongo = require('mongodb').MongoClient
-const connectionURL = 'mongodb://localhost:27017'
-
-
 var app = express();
 var Jimp = require("jimp");
 var fs = require('fs');
 var Twit = require('twit')
 var T = new Twit(require('./config.js'))
-
 
 
 app.use(express.static(__dirname + '/public'));
@@ -33,7 +29,12 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
+
 const imagesData = [];
+let selectedEle = "";
+let eleCommentCounts = "";
+
+
 const originalImage = fs.readFileSync('original-img.jpg', {
     encoding: 'base64'
 });
@@ -41,126 +42,100 @@ const imageToTweet = fs.readFileSync('altered-img.jpg', {
     encoding: 'base64'
 });
 
+const countComments = (eleUserName, eleTwitterId) => {
+    T.get('search/tweets', { q: `to:{${eleUserName}}`, sinceId: eleTwitterId })
+    .catch((err) => {console.log(err.stack)})
+    .then((result) => {
+      return result.data.statuses.length
+    })
+}
+
 const runTheBot = () => {
+
   const arrayOfImages = [];
   T.get('search/tweets', { q: 'images', count: 100 })
     .catch(function (err) {
       console.log('caught error', err.stack)
     })
-    .then(function (result) {
-
+    .then((result) => {
       const data = result.data.statuses;
-      console.log(data[0]);
 
       return data.map((ele, index) => {
-        if(ele.entities.media){
+        if(ele.entities.media && ele.entities.user_mentions[0]){
+
            const elePath = ele.entities.media[0].media_url_https;
-            return imagesData.push({
+           const eleUserName = ele.entities.user_mentions[0].screen_name;
+           const eleTwitterId = ele.id_str;
+           const eleLikes = ele.favorite_count;
+           const eleRetweets = ele.retweet_count;
+
+           return imagesData.push({
               elePath: elePath,
-              userFollowers: ele.user.followers_count,
-              userLikes: ele.user.friends_count
+              eleUserName: eleUserName,
+              eleTwitterId: eleTwitterId,
+              eleLikes: parseInt(eleLikes),
+              eleRetweets: parseInt(eleRetweets),
             })
-            // console.log(imagesData);
          }else{
            return;
          }
       })
     })
     .then(() => {
-      let selectedEle =  imagesData[Math.floor(imagesData.length * Math.random())];
-      // console.log(selectedEle);
-      Jimp.read(selectedEle.elePath)
-      .then(img => {
-        return img
-        .resize(600, 600)
-        .write('original-img.jpg');
-      })
+      selectedEle = imagesData[Math.floor(imagesData.length * Math.random())];
+      return selectedEle
+    })
+    .then(() => {
 
-      Jimp.read(selectedEle.elePath)
-      .then(img => {
-        return img
-        // comments
-        .color([{ apply: 'red', params: [0] }])
-        // retweets
-        .color([{ apply: 'green', params: [0] }])
-        // likes
-        .color([{ apply: 'blue', params: [0]}])
-        .resize(600, 600)
-          .write('altered-img.jpg');
+      T.get('search/tweets', { q: `to:{${selectedEle.eleUserName}}`, sinceId: selectedEle.eleTwitterId })
+      .catch((err) => {console.log(err.stack)})
+      .then((result) => {
+
+        let eleCommentCounts = result.data.statuses.length;
+        selectedEle.eleCommentCounts = parseInt(eleCommentCounts);
+
+        Jimp.read(selectedEle.elePath)
+        .then(img => {
+          return img
+          .color([{ apply: 'red', params: [selectedEle.eleLikes] }])
+          .color([{ apply: 'green', params: [selectedEle.eleRetweets] }])
+          .color([{ apply: 'blue', params: [selectedEle.eleCommentCounts]}])
+          .resize(600, 600)
+            .write('altered-img.jpg');
+        })
+        .catch(err => {
+          console.error(err);
+        })
       })
-      .catch(err => {
-        console.error(err);
-      })
-      .then(() => {
-        // return tweetTheModifiedImage(selectedEle);
-      })
+     })
+    .then(() => {
+      return tweetTheModifiedImage(selectedEle)
   })
 }
 
+// make this in promises();
 const tweetTheModifiedImage = (selectedEle) => {
-
   T.post('media/upload', {
-        media: imageToTweet,
-    }, function(error, media, response) {
-        if(error){
-          console.log(error);
-        }
-        if (!error) {
-            var status = {
-                status: `${selectedEle.userFollowers}, ${selectedEle.userLikes}`,
-                media_ids: media.media_id_string
-            }
-            T.post('statuses/update', status, function(error, tweet, response) {
-                if (!error) {
-                    console.log("Posted.");
-                }
-            });
-        }
-    });
-  }
+    media: imageToTweet,
+  }, (error, media, response) => {
+      if(error){
+        console.log(error);
+      }
+      if (!error) {
+          let caption = `RGB(${selectedEle.eleLikes}, ${selectedEle.eleRetweets}, ${selectedEle.eleCommentCounts})`;
+          let status = {
+            status: caption,
+            media_ids: media.media_id_string
+          };
+          T.post('statuses/update', status, function(error, tweet, response) {
+              if (!error) {
+                  console.log("Posted.");
+              }
+          });
+      }
+})};
 
-//   sendTheDataToTheDb = (imageToTweet, originalImage, selectedEle) => {
-//     mongo.connect(connectionURL,
-//       { useNewUrlParser: true },
-//       (err, client) => {
-//
-//       const db = client.db('oroborogram-db');
-//       const collection = db.collection('data')
-//
-//       if (err) {
-//         console.error(err)
-//         return
-//       }
-//       collection.insertOne(
-//         {originalImage: originalImage,
-//         imageToTweet: imageToTweet,
-//         selectedEle: {
-//           userFollowers: selectedEle.userFollowers,
-//           userLikes: selectedEle.userLikes
-//         }}
-//       , (err, result) => {
-//     })
-// })}
 
-// app.get('/main-data', (req, res) => {
-//   mongo.connect(connectionURL, {
-//        useNewUrlParser: true,
-//      }, (error, client) => {
-//
-//      const db = client.db('oroborogram-db');
-//      const collection = db.collection('data')
-//
-//        if(error){
-//          return console.log("Unable to connect to the db.");
-//        }
-//        collection
-//          .find()
-//          .toArray((error, data) => {
-//            console.log(data);
-//            res.json(data);
-//          });
-//      })
-// })
 
 runTheBot();
 
