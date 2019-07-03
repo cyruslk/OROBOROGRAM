@@ -22,3 +22,4 @@ yarn-error.log*
 
 
 config.js
+/server/config.js
