@@ -16,7 +16,7 @@
     "html2canvas": "^1.0.0-alpha.10",
     "jimp": "^0.2.28",
     "jsdom": "^15.1.1",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.13",
     "moment": "^2.21.0",
     "mongodb": "^3.2.6",
     "node-base64-image": "^1.0.5",
