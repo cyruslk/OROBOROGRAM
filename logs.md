@@ -1,3 +1,8 @@
+# IMPORTANT LINKS
+
+- THE PROJECT'S REPOSITORY: https://github.com/cyruslk/OROBOROGRAM
+- THE PROJECT'S TWITTER BOT: https://twitter.com/oroborogram
+
 # 2019.07.01
 
 The idea behind this small bot is to create a self-destruction program; a software that'll pick an Image on Twitter and alter the image styling based on it's metadata ( = attached hidden data). I've been working on this project on/off for quite some time now. Through this project I came accross three different paths/concepts I still find valuable and I'ld like to explain further:
@@ -57,159 +62,120 @@ Here's the repository where these (proprietary) filters are reproduced. I'm inte
 .filter-1977 {
   filter: sepia(.5) hue-rotate(-30deg) saturate(1.4);
 }
-
 .filter-aden {
   filter: sepia(.2) brightness(1.15) saturate(1.4);
 }
-
 .filter-amaro {
   filter: sepia(.35) contrast(1.1) brightness(1.2) saturate(1.3);
 }
-
 .filter-brannan {
   filter: sepia(.4) contrast(1.25) brightness(1.1) saturate(.9) hue-rotate(-2deg);
 }
-
 .filter-brooklyn {
   filter: sepia(.25) contrast(1.25) brightness(1.25) hue-rotate(5deg);
 }
-
 .filter-charmes {
   filter: sepia(.25) contrast(1.25) brightness(1.25) saturate(1.35) hue-rotate(-5deg);
 }
-
 .filter-clarendon {
   filter: sepia(.15) contrast(1.25) brightness(1.25) hue-rotate(5deg);
 }
-
 .filter-crema {
   filter: sepia(.5) contrast(1.25) brightness(1.15) saturate(.9) hue-rotate(-2deg);
 }
-
 .filter-dogpatch {
   filter: sepia(.35) saturate(1.1) contrast(1.5);
 }
-
 .filter-earlybird {
   filter: sepia(.25) contrast(1.25) brightness(1.15) saturate(.9) hue-rotate(-5deg);
 }
-
 .filter-gingham {
   filter: contrast(1.1) brightness(1.1);
 }
-
 .filter-ginza {
   filter: sepia(.25) contrast(1.15) brightness(1.2) saturate(1.35) hue-rotate(-5deg);
 }
-
 .filter-hefe {
   filter: sepia(.4) contrast(1.5) brightness(1.2) saturate(1.4) hue-rotate(-10deg);
 }
-
 .filter-helena {
   filter: sepia(.5) contrast(1.05) brightness(1.05) saturate(1.35);
 }
-
 .filter-hudson {
   filter: sepia(.25) contrast(1.2) brightness(1.2) saturate(1.05) hue-rotate(-15deg);
 }
-
 .filter-inkwell {
   filter: brightness(1.25) contrast(.85) grayscale(1);
 }
-
 .filter-juno {
   filter: sepia(.35) contrast(1.15) brightness(1.15) saturate(1.8);
 }
-
 .filter-kelvin {
   filter: sepia(.15) contrast(1.5) brightness(1.1) hue-rotate(-10deg);
 }
-
 .filter-lark {
   filter: sepia(.25) contrast(1.2) brightness(1.3) saturate(1.25);
 }
-
 .filter-lofi {
   filter: saturate(1.1) contrast(1.5);
 }
-
 .filter-ludwig {
   filter: sepia(.25) contrast(1.05) brightness(1.05) saturate(2);
 }
-
 .filter-maven {
   filter: sepia(.35) contrast(1.05) brightness(1.05) saturate(1.75);
 }
-
 .filter-mayfair {
   filter: contrast(1.1) brightness(1.15) saturate(1.1);
 }
-
 .filter-moon {
   filter: brightness(1.4) contrast(.95) saturate(0) sepia(.35);
 }
-
 .filter-nashville {
   filter: sepia(.25) contrast(1.5) brightness(.9) hue-rotate(-15deg);
 }
-
 .filter-perpetua {
   filter: contrast(1.1) brightness(1.25) saturate(1.1);
 }
-
 .filter-poprocket  {
   filter: sepia(.15) brightness(1.2);
 }
-
 .filter-reyes {
   filter: sepia(.75) contrast(.75) brightness(1.25) saturate(1.4);
 }
-
 .filter-rise {
   filter: sepia(.25) contrast(1.25) brightness(1.2) saturate(.9);
 }
-
 .filter-sierra {
   filter: sepia(.25) contrast(1.5) brightness(.9) hue-rotate(-15deg);
 }
-
 .filter-skyline {
   filter: sepia(.15) contrast(1.25) brightness(1.25) saturate(1.2);
 }
-
 .filter-slumber {
   filter: sepia(.35) contrast(1.25) saturate(1.25);
 }
-
 .filter-stinson {
   filter: sepia(.35) contrast(1.25) brightness(1.1) saturate(1.25);
 }
-
 .filter-sutro {
   filter: sepia(.4) contrast(1.2) brightness(.9) saturate(1.4) hue-rotate(-10deg);
 }
-
 .filter-toaster {
   filter: sepia(.25) contrast(1.5) brightness(.95) hue-rotate(-15deg);
 }
-
 .filter-valencia {
   filter: sepia(.25) contrast(1.1) brightness(1.1);
 }
-
 .filter-vesper {
   filter: sepia(.35) contrast(1.15) brightness(1.2) saturate(1.3);
 }
-
 .filter-walden {
   filter: sepia(.35) contrast(.8) brightness(1.25) saturate(1.4);
 }
-
 .filter-willow {
   filter: brightness(1.2) contrast(.85) saturate(.05) sepia(.2);
 }
-
 .filter-xpro-ii  {
   filter: sepia(.45) contrast(1.25) brightness(1.75) saturate(1.3) hue-rotate(-5deg);
 }
@@ -218,12 +184,20 @@ Here's the repository where these (proprietary) filters are reproduced. I'm inte
 
 Here, we can therefore see using a word occurence tool, that what Instagram uses most are the following filters.Then, the logic is to mix the likes, comments and reposts numbers of each image and use these are parameters in order to pipe them into a custom filter I will create *à la manière de* Instagram.
 
-- `contrast()`, 37/40
+
+- `contrast()`, 37/40
 - `brightness()`, 36/40
 - `sepia()`, 35/40
 - `saturate()`, 30/40
 
+------
 
+A few things I need to consider now:
+
+- As a protocol for commit messages, I'm considering going with these specs:
+  - https://www.conventionalcommits.org/en/v1.0.0-beta.4/
+  - https://github.com/semantic-release/semantic-release
+- I will now refactor the entire project's infrastructure. I'll use branches actively and will wait a bit before deciding where to go with the Twitter bot. In the meantime, I can push everything on  `surge` subdomains.
 
 
 
