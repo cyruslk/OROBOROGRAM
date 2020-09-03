@@ -38,6 +38,8 @@ The idea behind this small bot is to create a self-destruction program; a softwa
            .catch(err => {
              console.error(err);
            })
-   Here, the red layer is altered by the number of likes, the green one by the number of retweets and the blue one by the number of comments and replies. As a label, I'm attaching the 
+   Here, the red layer is altered by the number of likes, the green one by the number of retweets and the blue one by the number of comments and replies. As a label, I'm attaching the RGB() code concatenated with its numbers.
+
+3. **Monitoring the same images**  
 
    
