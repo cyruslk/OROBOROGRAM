@@ -227,12 +227,12 @@ The project will therefore be composed of the following, **<u>developed simultan
       3. ...And so on
    6. Display <u>the original image</u> close to the altered image on <u>the front-end</u> (a surge domain).
 
-3. SAME IMAGE:
+3. SAME IMAGE - FILTER CONCATENATION:
 
    1. At a given interval, target the same image from the Twitter platform.
-   2. Fetch all its metadata and store it*
+   2. Fetch all the updated (?) metadata and store it*
    3. Isolate the `comments`, `reposts`, `likes` values*
-   4. 
+   4. Duplicate the original image and apply the same filter concatenation to the same image, fetched at different timeframe and therefore possibily with a different visibility inside the platform.
 
    
 
