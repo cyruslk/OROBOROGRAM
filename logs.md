@@ -216,9 +216,7 @@ Here's the repository where these (proprietary) filters are reproduced. I'm inte
 ```
 
 
-
 Here, we can therefore see using a word occurence tool, that what Instagram uses most are the following filters.Then, the logic is to mix the likes, comments and reposts numbers of each image and use these are parameters in order to pipe them into a custom filter I will create *à la manière de* Instagram.
-
 
 - `contrast()`, 37/40
 - `brightness()`, 36/40
