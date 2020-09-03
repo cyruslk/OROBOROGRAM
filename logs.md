@@ -198,6 +198,45 @@ A few things I need to consider now:
   - https://www.conventionalcommits.org/en/v1.0.0-beta.4/
   - https://github.com/semantic-release/semantic-release
 - I will now refactor the entire project's infrastructure. I'll use branches actively and will wait a bit before deciding where to go with the Twitter bot. In the meantime, I can push everything on  `surge` subdomains.
+- The server side will be hosted on `heroku?` Might need a `dyno` tho.
+  
+
+The project will therefore be composed of the following, **<u>developed simultaneously on different branches</u>**:
+
+1. CUSTOM FILTERS:
+
+   1. At a given interval, get a random image of the Twitter platform
+   2. Fetch all its metadata and store it*
+   3. Isolate the `comments`, `reposts`, `likes` values*
+   4. Assign each of these values to a style amongst `contrast()`, `brightness()`, `sepia()`, `saturate()`.
+   5. Concatenate these styles and create the custom filter. E.g: if values are `10, 1.4K, 30 `, then the style could be either:
+      1. `filter: sepia(10) constrat(1400) brightness(30)`
+      2. `filter: contrast(30) sepia(1400) brightness(10)`
+      3. ... (The order of these filters when they are concatenated does matter)
+   6. Display <u>the original image</u> close to the altered image on <u>the front-end</u> (a surge domain).
+
+2. RGB COLORS:
+
+   1. At a given interval, get a random image of the Twitter platform
+   2. Fetch all its metadata and store it*
+   3. Isolate the `comments`, `reposts`, `likes` values*
+   4. Assign each of these values to a value of the `RGB(X, Y, Z)` code. This can't be done with pure css and would require a JavaScript library (in order to manipulate the image) like [Konvas.js](https://konvajs.org/docs/filters/RGB.html) for an example.
+   5. Apply this `RGB(X, Y, Z)` value to the original image. E.g: if values are `10, 1.4K, 30 `, then the style could be either:
+      1. `rgb(10, 1400, 30)`
+      2. `rgb(1400, 10, 30)`
+      3. ...And so on
+   6. Display <u>the original image</u> close to the altered image on <u>the front-end</u> (a surge domain).
+
+3. SAME IMAGE:
+
+   1. At a given interval, target the same image from the Twitter platform.
+   2. Fetch all its metadata and store it*
+   3. Isolate the `comments`, `reposts`, `likes` values*
+   4. 
+
+   
+
+
 
 
 
