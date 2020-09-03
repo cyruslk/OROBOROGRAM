@@ -28,8 +28,6 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 
-
-
 const imagesData = [];
 let selectedEle = "";
 let eleCommentCounts = "";
